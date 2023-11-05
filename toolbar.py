@@ -1536,7 +1536,29 @@ def PhenoApp(m=None):
                  'Schorfheide': "94c53dd1-acad-4ad8-a73b-62669ec7af2a",
                  'Neusiedler': "1230b149-9ba5-4ab8-86c9-cf93120f8ae2"}
 
-    #eLTER_SITES = {}
+    networks = {"Austria": "d45c2690-dbef-4dbc-a742-26ea846edf28",
+            "Belgica": "735946e0-4e9e-484a-acee-85e31f4e2a2e",
+            "Bulgaria": "20ad4fa2-cc07-4848-b9ed-8952c55f1a3f",
+            "Denmark": "e3911e8a-ce9b-46ce-8265-c2dc9676ad03",
+            "Finland": "aaae2a46-f355-41d0-8067-c2f0cd52e814",
+            "France": "d8d9206f-b1bd-4f90-84b7-8c662d4235a2",
+            "Germany": "e904354a-f3a0-40ce-a9b5-61741f66c824",
+            "Greece": "83453a6c-792d-4549-9dbb-c17ced2e0cc3",
+            "Hungary": "0615a89f-2883-47ab-8cd0-2508f413cab7",
+            "Israel": "e0f680c2-22b1-4424-bf54-58aa9b7476a0",
+            "Italy": "7fef6b73-e5cb-4cd2-b438-ed32eb1504b3",
+            "Netherlands": "8312c2c4-a787-4986-9a3d-3f1364bab3ba",
+            "Norway": "bc7c517b-3648-40cc-a04c-8c98d009c4a9",
+            "Poland": "67763729-45a7-4248-a70d-622b1d0a3d41",
+            "Portugal": "d8eb4823-b707-4590-94d8-d90c1d07d6f8",
+            "Romania": "4260f964-0ac4-4406-8adc-5afc06e31779",
+            "Slovakia": "3d6a8d72-9f86-4082-ad56-a361b4cdc8a0",
+            "Slovenia": "fda2984f-9aea-4abf-9f6c-c3eca0f82eb8",
+            "Spain": "2b70f1fb-f7d9-4615-a1a3-33fc6fa44600",
+            "Sweden": "a50d9e39-d4b6-4d30-bba2-43580ac8c0b2",
+            "Switzerland": "cedf695c-c6dc-4660-b944-3c22f12ad0d9"}
+
+    country_sites = {}    
 
     for k, v in deimsDict.items():
         eLTER_SITES[k] = [deims.getSiteById(v)['title'], gdf_to_ee(deims.getSiteBoundaries(v))]
@@ -1595,12 +1617,16 @@ def PhenoApp(m=None):
     )
 
     #Here we start the changes
+    network = widgets.Dropdown(
+        options=[i for i in networks.keys()],
+        value=None,
+        description="eLTER Network:",
+        layout=widgets.Layout(width=widget_width, padding=padding),
+        style=style,
+    )
+
     site = widgets.Dropdown(
-        options=[i for i in deimsDict.keys()],
-        #     "Donana",
-        #     "Craighorn",
-        #     "Grand Paradiso",
-        # ],
+        options=[],
         value=None,
         description="eLTER Site:",
         layout=widgets.Layout(width=widget_width, padding=padding),
@@ -1702,26 +1728,55 @@ def PhenoApp(m=None):
     )   
 
 
-    def dropdown_change(change):
+    def network_change(change):
+
+        #country_sites = {}
+        if change['new']:
+
+            # recorro una red nacional
+            country_list = deims.getListOfSites(networks[change['new']])
+
+            for i in country_list:        
+                #print(i)        
+                name = deims.getSiteById(i)['title'].split(' - ')[0]
+                #print(name)        
+                geom = deims.getSiteBoundaries(i)['geometry']#geemap.gdf_to_ee(deims.getSiteBoundaries(i))
+                if len(geom) != 0:
+                    country_sites[name] = gdf_to_ee(deims.getSiteBoundaries(i))
+                else:
+                    continue 
+            
+            site.options = [i for i in list(country_sites.keys())]
+            # geom = eLTER_SITES[change['new']][1]
+            # title = eLTER_SITES[change['new']][0]
+            # m.centerObject(geom)
+            
+            # with output:
+            #     output.clear_output()
+            #     print('eLTER Title:', title)
+                
+    network.observe(network_change, "value")
+
+    def site_change(change):
+
+        #print(country_sites)
         if change['new']:
             
-            geom = eLTER_SITES[change['new']][1]
-            title = eLTER_SITES[change['new']][0]
+            geom = country_sites[change['new']]
+            #title = eLTER_SITES[change['new']][0]
             m.centerObject(geom)
             if ndvi2gif.value==True:
 
-                MyClass = NdviSeasonality(roi=geom, sat='S2', key='perc_90', periods=4,start_year=2020, end_year=2022, index='ndvi')
-                median = MyClass.get_year_composite().median()
-                vizParams = {'bands': ['spring', 'autumn', 'summer'], 'min': 0.15, 'max': 0.8}
+                MyClass = NdviSeasonality(roi=geom, sat='S2', key='perc_90', periods=4,start_year=2018, end_year=2022, index='ndvi')
+                median = MyClass.get_year_composite().mean()
+                vizParams = {'bands': ['spring', 'autumn', 'winter'], 'min': 0.15, 'max': 0.8}
                 m.addLayer(median, vizParams, 'perc_90')
 
-
-
-            with output:
-                output.clear_output()
-                print('eLTER Title:', title)
+            # with output:
+            #     output.clear_output()
+            #     print('eLTER Title:', title)
                 
-    site.observe(dropdown_change, "value")
+    site.observe(site_change, "value")
 
 
     def legend_change(c):   
@@ -1806,7 +1861,7 @@ def PhenoApp(m=None):
 
         if m is not None and collection.value == "MODIS MCD12Q2.006":
             
-            geom = eLTER_SITES[site.value][1]    
+            geom = country_sites[site.value]    
             dataset = dataset[collection.value].filterBounds(geom).filterDate(start_date, end_date)
             clipped = dataset.map(lambda image: image.clip(geom))
             banda = bands[phenometrics.value]
@@ -1823,7 +1878,7 @@ def PhenoApp(m=None):
             print(name)
 
             downloads_images[name] = [vegetationrs, geom]
-            print(downloads_images)
+            #print(downloads_images)
             rdlist.options = [i for i in list(downloads_images.keys())]
             m.addLayer(vegetationrs, modis_vis, name)
 
@@ -1836,9 +1891,25 @@ def PhenoApp(m=None):
                 keyPhen = phenometrics.value
 
             #Aqui hay que poner el site como variable
-            base = 'projects/ee-digdgeografo/assets/{}_{}_{}{}'.format(site.value, start_year.value, keyPhen, str(phenometrics_val.value)[0])
+            #Vamos a mapear el nombre de los sites a los assets de GEE
+            dnames = {"Doñana Long-Term Socio-ecological Research Platform": "Donana",
+                      "Braila Islands": "Braila",
+                      "LTSER-Sabor": "Baixo",
+                      "River Exe": "River_Exe",
+                      "Cairngorms National Park LTSER": "Cairngorms",
+                      "LTSER Veluwe": "Veluwe",
+                      "Gran Paradiso National Park": "Gran_Paradiso",
+                      "Schorfheide-Chorin": "Schorfheide",
+                      "LTSER Platform Neusiedler See": "Neusiedler"}
+            
+            if site.value in dnames.keys():
+                pheno_name = dnames[site.value]
+            else:
+                pheno_name = site.value
+            base = 'projects/ee-digdgeografo/assets/{}_{}_{}{}'.format(pheno_name, start_year.value, keyPhen, 
+                                                                       str(phenometrics_val.value)[0])
             nbase = ee.Image(base)
-            geom = eLTER_SITES[site.value][1]    
+            geom = country_sites[site.value]    
 
             #print(base)
             #geom = eLTER_SITES[site.value][1]   
@@ -1862,7 +1933,7 @@ def PhenoApp(m=None):
                 }
 
                 name = phenometrics.value + ' ' + phenometrics_val.value + ' ' + str(start_year.value)
-                print(name)
+                #print(name)
 
                 downloads_images[name] = [nbase, geom]
                 rdlist.options = [i for i in list(downloads_images.keys())]
@@ -1937,6 +2008,7 @@ def PhenoApp(m=None):
     toolbar_header.children = [close_button, toolbar_button]
     toolbar_footer = widgets.VBox()
     toolbar_footer.children = [
+        network,
         site,
         collection,
         widgets.HBox([start_year, start_year_label]),
@@ -2038,7 +2110,29 @@ def WaterDetect(m=None):
                  'Schorfheide': "94c53dd1-acad-4ad8-a73b-62669ec7af2a",
                  'Neusiedler': "1230b149-9ba5-4ab8-86c9-cf93120f8ae2"}
 
-    #eLTER_SITES = {}
+    networks = {"Austria": "d45c2690-dbef-4dbc-a742-26ea846edf28",
+            "Belgica": "735946e0-4e9e-484a-acee-85e31f4e2a2e",
+            "Bulgaria": "20ad4fa2-cc07-4848-b9ed-8952c55f1a3f",
+            "Denmark": "e3911e8a-ce9b-46ce-8265-c2dc9676ad03",
+            "Finland": "aaae2a46-f355-41d0-8067-c2f0cd52e814",
+            "France": "d8d9206f-b1bd-4f90-84b7-8c662d4235a2",
+            "Germany": "e904354a-f3a0-40ce-a9b5-61741f66c824",
+            "Greece": "83453a6c-792d-4549-9dbb-c17ced2e0cc3",
+            "Hungary": "0615a89f-2883-47ab-8cd0-2508f413cab7",
+            "Israel": "e0f680c2-22b1-4424-bf54-58aa9b7476a0",
+            "Italy": "7fef6b73-e5cb-4cd2-b438-ed32eb1504b3",
+            "Netherlands": "8312c2c4-a787-4986-9a3d-3f1364bab3ba",
+            "Norway": "bc7c517b-3648-40cc-a04c-8c98d009c4a9",
+            "Poland": "67763729-45a7-4248-a70d-622b1d0a3d41",
+            "Portugal": "d8eb4823-b707-4590-94d8-d90c1d07d6f8",
+            "Romania": "4260f964-0ac4-4406-8adc-5afc06e31779",
+            "Slovakia": "3d6a8d72-9f86-4082-ad56-a361b4cdc8a0",
+            "Slovenia": "fda2984f-9aea-4abf-9f6c-c3eca0f82eb8",
+            "Spain": "2b70f1fb-f7d9-4615-a1a3-33fc6fa44600",
+            "Sweden": "a50d9e39-d4b6-4d30-bba2-43580ac8c0b2",
+            "Switzerland": "cedf695c-c6dc-4660-b944-3c22f12ad0d9"}
+
+    country_sites = {}    
 
     for k, v in deimsDict.items():
         eLTER_SITES[k] = [deims.getSiteById(v)['title'], gdf_to_ee(deims.getSiteBoundaries(v))]
@@ -2131,12 +2225,16 @@ def WaterDetect(m=None):
     )
 
     #Here we start the changes
+    network = widgets.Dropdown(
+        options=[i for i in networks.keys()],
+        value=None,
+        description="eLTER Network:",
+        layout=widgets.Layout(width=widget_width, padding=padding),
+        style=style,
+    )
+
     site = widgets.Dropdown(
-        options=[i for i in deimsDict.keys()],
-        #     "Donana",
-        #     "Craighorn",
-        #     "Grand Paradiso",
-        # ],
+        options=[],
         value=None,
         description="eLTER Site:",
         layout=widgets.Layout(width=widget_width, padding=padding),
@@ -2274,26 +2372,55 @@ def WaterDetect(m=None):
     )   
 
 
-    def dropdown_change(change):
+    def network_change(change):
+
+        #country_sites = {}
+        if change['new']:
+
+            # recorro una red nacional
+            country_list = deims.getListOfSites(networks[change['new']])
+
+            for i in country_list:        
+                #print(i)        
+                name = deims.getSiteById(i)['title'].split(' - ')[0]
+                #print(name)        
+                geom = deims.getSiteBoundaries(i)['geometry']#geemap.gdf_to_ee(deims.getSiteBoundaries(i))
+                if len(geom) != 0:
+                    country_sites[name] = gdf_to_ee(deims.getSiteBoundaries(i))
+                else:
+                    continue 
+            
+            site.options = [i for i in list(country_sites.keys())]
+            # geom = eLTER_SITES[change['new']][1]
+            # title = eLTER_SITES[change['new']][0]
+            # m.centerObject(geom)
+            
+            # with output:
+            #     output.clear_output()
+            #     print('eLTER Title:', title)
+                
+    network.observe(network_change, "value")
+
+    def site_change(change):
+
+        #print(country_sites)
         if change['new']:
             
-            geom = eLTER_SITES[change['new']][1]
-            title = eLTER_SITES[change['new']][0]
+            geom = country_sites[change['new']]
+            #title = eLTER_SITES[change['new']][0]
             m.centerObject(geom)
             if ndvi2gif.value==True:
 
                 MyClass = NdviSeasonality(roi=geom, sat='S2', key='perc_90', periods=4,start_year=2018, end_year=2022, index='ndvi')
-                median = MyClass.get_year_composite().median()
-                vizParams = {'bands': ['spring', 'autumn', 'summer'], 'min': 0.15, 'max': 0.8}
+                median = MyClass.get_year_composite().mean()
+                vizParams = {'bands': ['spring', 'autumn', 'winter'], 'min': 0.15, 'max': 0.8}
                 m.addLayer(median, vizParams, 'perc_90')
 
-
-
-            with output:
-                output.clear_output()
-                print('eLTER Title:', title)
+            # with output:
+            #     output.clear_output()
+            #     print('eLTER Title:', title)
                 
-    site.observe(dropdown_change, "value")
+    site.observe(site_change, "value")
 
 
     def legend_change(c):   
@@ -2417,7 +2544,7 @@ def WaterDetect(m=None):
 
         if m is not None:
             
-            geom = eLTER_SITES[site.value][1]
+            geom = country_sites[site.value]
             
             if collection.value == 'Sentinel 2':
                 dataset = col.filterBounds(geom).filterDate(ee.Date(sdate), 
@@ -2572,6 +2699,7 @@ def WaterDetect(m=None):
     toolbar_header.children = [close_button, toolbar_button]
     toolbar_footer = widgets.VBox()
     toolbar_footer.children = [
+        network,
         site,
         collection,
         widgets.HBox([start_date, end_date]),
@@ -2945,7 +3073,7 @@ def LST(m=None):
 
     def site_change(change):
 
-        print(country_sites)
+        #print(country_sites)
         if change['new']:
             
             geom = country_sites[change['new']]
@@ -3023,7 +3151,7 @@ def LST(m=None):
 
         if m is not None:
             
-            geom = country_sites[site.value] #eLTER_SITES[site.value][1]
+            geom = country_sites[site.value] 
 
             # Apply cloud filter to landsat
             if collection.value == 'Landsat':
