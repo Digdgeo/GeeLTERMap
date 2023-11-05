@@ -2914,52 +2914,6 @@ def LST(m=None):
     )
 
     
-    
-    
-    # def sitesss_change(change):
-
-    #     #country_sites = {}
-    #     if change['new']:
-            
-    #         # recorro una red nacional
-    #         country_list = deims.getListOfSites(networks[change['new']])
-
-
-    #         for i in country_list:        
-    #             #print(i)        
-    #             name = deims.getSiteById(i)['title'].split(' - ')[0]
-    #             #print(name)        
-    #             geom = deims.getSiteBoundaries(i)['geometry']#geemap.gdf_to_ee(deims.getSiteBoundaries(i))
-    #             if len(geom) != 0:
-    #                 country_sites[name] = gdf_to_ee(deims.getSiteBoundaries(i))
-    #             else:
-    #                 continue 
-            
-    #         site.options = [i for i in list(country_sites.keys())]
-
-    #         geom = country_sites[change['new']]
-    #         #title = eLTER_SITES[change['new']][0]
-    #         m.centerObject(geom)
-    #         if ndvi2gif.value==True:
-
-    #             MyClass = NdviSeasonality(roi=geom, sat='S2', key='perc_90', periods=4,start_year=2018, end_year=2022, index='ndvi')
-    #             median = MyClass.get_year_composite().mean()
-    #             vizParams = {'bands': ['spring', 'autumn', 'winter'], 'min': 0.15, 'max': 0.8}
-    #             m.addLayer(median, vizParams, 'perc_90')
-
-    #         # with output:
-    #         #     output.clear_output()
-    #         #     print('eLTER Title:', title)
-                
-    # site.observe(network_change, "value")
-    
-    
-    
-    
-    
-    
-    
-    
     def network_change(change):
 
         #country_sites = {}
