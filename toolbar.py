@@ -12,8 +12,8 @@ from ndvi2gif import NdviSeasonality
 
 from .common import *
 
-print("This is the elter networks branch")
-print("One more silly line")
+print("Welcome to GeeLTERMap")
+print("Please wait a minute after the country network is selected")
 
 eLTER_SITES = {}
 downloads_images = {}
@@ -2698,7 +2698,7 @@ def LST(m=None):
             "Sweden": "a50d9e39-d4b6-4d30-bba2-43580ac8c0b2",
             "Switzerland": "cedf695c-c6dc-4660-b944-3c22f12ad0d9"}
 
-    #eLTER_SITES = {}
+    country_sites = {}    
 
     for k, v in deimsDict.items():
         eLTER_SITES[k] = [deims.getSiteById(v)['title'], gdf_to_ee(deims.getSiteBoundaries(v))]
@@ -2783,8 +2783,16 @@ def LST(m=None):
     )
     
     #Here we start the changes
+    network = widgets.Dropdown(
+        options=[i for i in networks.keys()],
+        value=None,
+        description="eLTER Network:",
+        layout=widgets.Layout(width=widget_width, padding=padding),
+        style=style,
+    )
+
     site = widgets.Dropdown(
-        options=[i for i in deimsDict.keys()],
+        options=[],
         value=None,
         description="eLTER Site:",
         layout=widgets.Layout(width=widget_width, padding=padding),
@@ -2817,12 +2825,12 @@ def LST(m=None):
         layout=widgets.Layout(width="200px", padding=padding),
     )
 
-    time_series = widgets.Checkbox(
-        value=False,
-        description="Load time series data",
-        tooltip="Load time series data for the selected period",
-        style=style,
-    )
+    # time_series = widgets.Checkbox(
+    #     value=False,
+    #     description="Load time series data",
+    #     tooltip="Load time series data for the selected period",
+    #     style=style,
+    # )
 
     ndvi2gif = widgets.Checkbox(
         value=True,
@@ -2905,11 +2913,89 @@ def LST(m=None):
         style=style,
     )
 
-    def dropdown_change(change):
+    
+    
+    
+    # def sitesss_change(change):
+
+    #     #country_sites = {}
+    #     if change['new']:
+            
+    #         # recorro una red nacional
+    #         country_list = deims.getListOfSites(networks[change['new']])
+
+
+    #         for i in country_list:        
+    #             #print(i)        
+    #             name = deims.getSiteById(i)['title'].split(' - ')[0]
+    #             #print(name)        
+    #             geom = deims.getSiteBoundaries(i)['geometry']#geemap.gdf_to_ee(deims.getSiteBoundaries(i))
+    #             if len(geom) != 0:
+    #                 country_sites[name] = gdf_to_ee(deims.getSiteBoundaries(i))
+    #             else:
+    #                 continue 
+            
+    #         site.options = [i for i in list(country_sites.keys())]
+
+    #         geom = country_sites[change['new']]
+    #         #title = eLTER_SITES[change['new']][0]
+    #         m.centerObject(geom)
+    #         if ndvi2gif.value==True:
+
+    #             MyClass = NdviSeasonality(roi=geom, sat='S2', key='perc_90', periods=4,start_year=2018, end_year=2022, index='ndvi')
+    #             median = MyClass.get_year_composite().mean()
+    #             vizParams = {'bands': ['spring', 'autumn', 'winter'], 'min': 0.15, 'max': 0.8}
+    #             m.addLayer(median, vizParams, 'perc_90')
+
+    #         # with output:
+    #         #     output.clear_output()
+    #         #     print('eLTER Title:', title)
+                
+    # site.observe(network_change, "value")
+    
+    
+    
+    
+    
+    
+    
+    
+    def network_change(change):
+
+        #country_sites = {}
+        if change['new']:
+
+            # recorro una red nacional
+            country_list = deims.getListOfSites(networks[change['new']])
+
+            for i in country_list:        
+                #print(i)        
+                name = deims.getSiteById(i)['title'].split(' - ')[0]
+                #print(name)        
+                geom = deims.getSiteBoundaries(i)['geometry']#geemap.gdf_to_ee(deims.getSiteBoundaries(i))
+                if len(geom) != 0:
+                    country_sites[name] = gdf_to_ee(deims.getSiteBoundaries(i))
+                else:
+                    continue 
+            
+            site.options = [i for i in list(country_sites.keys())]
+            # geom = eLTER_SITES[change['new']][1]
+            # title = eLTER_SITES[change['new']][0]
+            # m.centerObject(geom)
+            
+            # with output:
+            #     output.clear_output()
+            #     print('eLTER Title:', title)
+                
+    network.observe(network_change, "value")
+
+    def site_change(change):
+
+        print(country_sites)
         if change['new']:
             
-            geom = eLTER_SITES[change['new']][1]
-            title = eLTER_SITES[change['new']][0]
+            geom = country_sites[change['new']]
+            #title = eLTER_SITES[change['new']][0]
             m.centerObject(geom)
             if ndvi2gif.value==True:
 
@@ -2918,11 +3004,11 @@ def LST(m=None):
                 vizParams = {'bands': ['spring', 'autumn', 'winter'], 'min': 0.15, 'max': 0.8}
                 m.addLayer(median, vizParams, 'perc_90')
 
-            with output:
-                output.clear_output()
-                print('eLTER Title:', title)
+            # with output:
+            #     output.clear_output()
+            #     print('eLTER Title:', title)
                 
-    site.observe(dropdown_change, "value")
+    site.observe(site_change, "value")
 
     def legend_change(c):   
 
@@ -2983,7 +3069,7 @@ def LST(m=None):
 
         if m is not None:
             
-            geom = eLTER_SITES[site.value][1]
+            geom = country_sites[site.value] #eLTER_SITES[site.value][1]
 
             # Apply cloud filter to landsat
             if collection.value == 'Landsat':
@@ -3094,6 +3180,7 @@ def LST(m=None):
     toolbar_header.children = [close_button, toolbar_button]
     toolbar_footer = widgets.VBox()
     toolbar_footer.children = [
+        network,
         site,
         collection,
         widgets.HBox([start_date, end_date]),
