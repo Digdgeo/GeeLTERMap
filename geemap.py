@@ -45,7 +45,7 @@ class Map(ipyleaflet.Map):
 
         warnings.filterwarnings("ignore")
 
-        print('this is it...')
+        print('this is it... Main')
 
         # Authenticates Earth Engine and initializes an Earth Engine session
         if "ee_initialize" not in kwargs.keys():
