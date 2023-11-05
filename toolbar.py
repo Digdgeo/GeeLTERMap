@@ -12,6 +12,8 @@ from ndvi2gif import NdviSeasonality
 
 from .common import *
 
+print("This is the elter networks branch")
+
 eLTER_SITES = {}
 downloads_images = {}
 
