@@ -1727,7 +1727,6 @@ def PhenoApp(m=None):
     layout=widgets.Layout(width="250px"),
     )   
 
-
     def network_change(change):
 
         #country_sites = {}
@@ -1740,7 +1739,7 @@ def PhenoApp(m=None):
                 #print(i)        
                 name = deims.getSiteById(i)['title'].split(' - ')[0]
                 #print(name)        
-                geom = deims.getSiteBoundaries(i)['geometry']#geemap.gdf_to_ee(deims.getSiteBoundaries(i))
+                geom = deims.getSiteBoundaries(i)['geometry']
                 if len(geom) != 0:
                     country_sites[name] = gdf_to_ee(deims.getSiteBoundaries(i))
                 else:
@@ -1875,7 +1874,7 @@ def PhenoApp(m=None):
             }
 
             name = phenometrics.value + ' ' + phenometrics_val.value + ' ' + str(start_year.value)
-            print(name)
+            #print(name)
 
             downloads_images[name] = [vegetationrs, geom]
             #print(downloads_images)
@@ -1948,7 +1947,7 @@ def PhenoApp(m=None):
                 }
 
                 name = phenometrics.value + ' ' + phenometrics_val.value + ' ' + str(start_year.value)
-                print(name)
+                #print(name)
 
                 downloads_images[name] = [nbase, geom]
                 rdlist.options = [i for i in list(downloads_images.keys())]
