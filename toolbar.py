@@ -2952,13 +2952,6 @@ def LST(m=None):
         layout=widgets.Layout(width="200px", padding=padding),
     )
 
-    # time_series = widgets.Checkbox(
-    #     value=False,
-    #     description="Load time series data",
-    #     tooltip="Load time series data for the selected period",
-    #     style=style,
-    # )
-
     ndvi2gif = widgets.Checkbox(
         value=True,
         description="Show Ndvi2Gif NDWI composite",
@@ -3024,7 +3017,7 @@ def LST(m=None):
 
     # Indexes
     windex = widgets.Dropdown(
-        options=['ST_B10', 'ST_EMIS', 'LST_Day_1km', 'LST_Night_1km'],
+        options=['ST_B10', 'LST_Day_1km', 'LST_Night_1km'],
         value='LST_Day_1km',
         description="Emissivity or LST band:",
         layout=widgets.Layout(width=widget_width, padding=padding),
