@@ -3433,8 +3433,8 @@ def Form(m=None):
     toolbar_button = widgets.ToggleButton(
         value=False,
         tooltip="Toolbar",
-        icon="thermometer-empty",
-        button_style="warning",
+        icon="list",
+        button_style="danger",
         layout=widgets.Layout(width="28px", height="28px", padding="0px 0px 0px 4px"),
     )
 
@@ -3466,7 +3466,7 @@ def Form(m=None):
     #displaying the text widget
     collector_name = widgets.Text(
         description="Collector Name", 
-        layout=widgets.Layout(width='350px', padding="0px 0px 0px 0px"),
+        layout=widgets.Layout(width='350px', padding=padding),
         flex_flow='column',
         align_items='stretch', 
         style= {'description_width': 'initial'}
@@ -3474,7 +3474,7 @@ def Form(m=None):
    
     collector_mail = widgets.Text(
         description="Collector Email", 
-        layout=widgets.Layout(width='350px', padding="0px 0px 0px 0px"),
+        layout=widgets.Layout(width='350px', padding=padding),
         flex_flow='column',
         align_items='stretch', 
         style= {'description_width': 'initial'}
@@ -3484,7 +3484,7 @@ def Form(m=None):
             value=37.8756,
             step=0.001,
             description='Insert Latitude Coord (decimal degrees):',
-            layout=widgets.Layout(width='350px', padding="0px 0px 0px 0px"),
+            layout=widgets.Layout(width='350px', padding=padding),
             flex_flow='column',
             align_items='stretch', 
             style= {'description_width': 'initial'}
@@ -3494,10 +3494,28 @@ def Form(m=None):
         value=-6.8756,
         step=0.001,
         description='Insert Longitude Coord (decimal degrees):',
-        layout=widgets.Layout(width='350px', padding="0px 0px 0px 0px"),
+        layout=widgets.Layout(width='350px', padding=padding),
         flex_flow='column',
         align_items='stretch', 
         style= {'description_width': 'initial'}
+    )
+
+    file = widgets.Text(
+        description="Upload file", 
+        value="Upload file", 
+        width='150px',
+        flex_flow='column',
+        align_items='stretch', 
+        padding=padding
+    )
+    
+    upload = widgets.FileUpload(
+        accept='.csv', 
+        multiple=False, 
+        width='75px',
+        flex_flow='column',
+        align_items='stretch', 
+        padding=padding
     )
 
     start_year = widgets.IntSlider(
@@ -3718,6 +3736,7 @@ def Form(m=None):
         collector_name,
         collector_mail,
         widgets.VBox([float_Xtext, float_Ytext]),
+        widgets.VBox([file, upload]),
         widgets.HBox([start_year, start_year_label]),
         ndvi2gif,
         #scale,

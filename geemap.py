@@ -749,12 +749,6 @@ class Map(ipyleaflet.Map):
             },
         }
 
-        # if kwargs["use_voila"]:
-        #     voila_tools = ["camera", "folder-open", "cloud-download", "gears"]
-
-        #     for item in voila_tools:
-        #         if item in tools.keys():
-        #             del tools[item]
 
         icons = list(tools.keys())
         tooltips = [item["tooltip"] for item in list(tools.values())]
