@@ -2,12 +2,56 @@
 __pycache__/
 *.py[cod]
 *$py.class
+<<<<<<< HEAD
 
+=======
+# *.tif
+# *.png
+**/.DS_Store
+>>>>>>> elter_networks
 # C extensions
 *.so
 
 # Distribution / packaging
+<<<<<<< HEAD
 .Python
+=======
+examples/notebooks/cache/
+examples/notebooks/*.tif
+examples/notebooks/*.gif
+examples/notebooks/*.zip
+examples/notebooks/*.jpg
+docs/notebooks/cache/
+docs/javascripts/
+docs/notebooks/*.html
+docs/html/*.html
+docs/notebooks/*.tif
+docs/notebooks/*.xml
+docs/notebooks/*.las
+docs/notebooks/*.laz
+docs/notebooks/*.las
+docs/notebooks/*.zip
+docs/notebooks/*.geojson
+docs/notebooks/*.kml
+docs/notebooks/*.nc
+docs/notebooks/*.csv
+docs/notebooks/*.png
+docs/notebooks/*.gif
+docs/notebooks/**/*.tif
+examples/notebooks/*.html
+examples/notebooks/*.tif
+examples/**/*.tif
+examples/html/
+docs/cache/
+docs/changelog_update.md
+**/*.las
+# docs/*.html
+cache/
+testing/
+private/
+.Python
+env/
+>>>>>>> elter_networks
 build/
 develop-eggs/
 dist/
@@ -20,11 +64,17 @@ parts/
 sdist/
 var/
 wheels/
+<<<<<<< HEAD
 share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
 MANIFEST
+=======
+*.egg-info/
+.installed.cfg
+*.egg
+>>>>>>> elter_networks
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -39,17 +89,25 @@ pip-delete-this-directory.txt
 # Unit test / coverage reports
 htmlcov/
 .tox/
+<<<<<<< HEAD
 .nox/
+=======
+>>>>>>> elter_networks
 .coverage
 .coverage.*
 .cache
 nosetests.xml
 coverage.xml
 *.cover
+<<<<<<< HEAD
 *.py,cover
 .hypothesis/
 .pytest_cache/
 cover/
+=======
+.hypothesis/
+.pytest_cache/
+>>>>>>> elter_networks
 
 # Translations
 *.mo
@@ -58,8 +116,11 @@ cover/
 # Django stuff:
 *.log
 local_settings.py
+<<<<<<< HEAD
 db.sqlite3
 db.sqlite3-journal
+=======
+>>>>>>> elter_networks
 
 # Flask stuff:
 instance/
@@ -72,12 +133,16 @@ instance/
 docs/_build/
 
 # PyBuilder
+<<<<<<< HEAD
 .pybuilder/
+=======
+>>>>>>> elter_networks
 target/
 
 # Jupyter Notebook
 .ipynb_checkpoints
 
+<<<<<<< HEAD
 # IPython
 profile_default/
 ipython_config.py
@@ -115,10 +180,18 @@ __pypackages__/
 # Celery stuff
 celerybeat-schedule
 celerybeat.pid
+=======
+# pyenv
+.python-version
+
+# celery beat schedule file
+celerybeat-schedule
+>>>>>>> elter_networks
 
 # SageMath parsed files
 *.sage.py
 
+<<<<<<< HEAD
 # Environments
 .env
 .venv
@@ -127,6 +200,15 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+=======
+# dotenv
+.env
+
+# virtualenv
+.venv
+venv/
+ENV/
+>>>>>>> elter_networks
 
 # Spyder project settings
 .spyderproject
@@ -140,6 +222,7 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+<<<<<<< HEAD
 .dmypy.json
 dmypy.json
 
@@ -158,3 +241,12 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
+=======
+
+# IDE settings
+.vscode/
+.idea/
+
+tests/test_testings.py
+docs/changelog_update.py
+>>>>>>> elter_networks
