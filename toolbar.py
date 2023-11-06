@@ -3,12 +3,14 @@
 import os
 import deims
 import ee
+import pandas as pd
 import ipyevents
 import ipyleaflet
 import ipywidgets as widgets
 from ipyfilechooser import FileChooser
 from IPython.core.display import display
 from ndvi2gif import NdviSeasonality
+from datetime import datetime
 
 from .common import *
 
@@ -3500,7 +3502,7 @@ def Form(m=None):
         style= {'description_width': 'initial'}
     )
 
-    file = widgets.Text(
+    filename = widgets.Text(
         description="Upload file", 
         value="Upload file", 
         width='150px',
@@ -3652,86 +3654,58 @@ def Form(m=None):
     def submit_clicked(b):
 
         #####################################################################
-        #functions to compute LST and Emissivity
+        #functions to upload form data to DataLab
         #####################################################################
 
 
-        sdate = str(start_date.value)
-        edate = str(end_date.value)
-        col = collections[collection.value]
-
         with output:
-            print("Loading data... Please wait...")
-
-        # nd_bands = None
-        # if (first_band.value is not None) and (second_band.value is not None):
-        #     nd_bands = [first_band.value, second_band.value]
+            print("Sending data... Please wait...")
 
         temp_output = widgets.Output()
 
         if m is not None:
             
-            geom = country_sites[site.value] 
+            try:
 
-            # Apply cloud filter to landsat
-            if collection.value == 'Landsat':
-                dataset = col.filterBounds(geom).filterDate(ee.Date(sdate), 
-                    ee.Date(edate)).filterMetadata('CLOUD_COVER', 'less_than', int(clouds.value))
-            else:
-                #print('Please, check your collection choice')
-                dataset = col.filterBounds(geom).filterDate(ee.Date(sdate), ee.Date(edate)) 
+                file = os.path.join(os.getcwd(), 'validation_data.txt')
+
+                t1 = '\nCollector {} with email {} have upload some data for {} eLTER Site:'.format(collector_name.value,
+                                            collector_mail.value, site.value)
+                t2 = ' Year: {} Metrics: {} DOY: {} Flood: {} Depth: {} LST: {}'.format(start_year.value, metrics.value, doy.value, 
+                            floods.value, depth.value, temps.value)
+                t3 = " Coords: " + str(float_Xtext.value) + " " + str(float_Xtext.value) + ' Attached file: ' + str('upload.value') +'\n'
+
+                
+                with open(file, 'a+') as val:
+                    #for k, v in textmail3.items():
+                        #print(k,v)
+                    val.write(t1)
+                    val.write(t2)
+                    val.write(t3)
 
 
-            clipped = dataset.map(lambda image: image.clip(geom))
+                csv = list(upload.value.values())[0]
+                if len(csv) != 0:
+                    now = datetime.datetime.now().strftime('%Y-%m-%d')
+                    content = csv['content']
+                    content = io.StringIO(content.decode('utf-8'))
+                    df = pd.read_csv(content)
+                    dfname = filename.value + "_" + now + ".csv"
+                    #print(dfname)
+                    df.to_csv(os.path.join(os.getcwd(), dfname))
 
-            #banda = clipped.map(d[windex.value])
-            banda = clipped.select(windex.value)
-            #vegetationrs = clipped.select(banda)
+                else:
+                    print('No csv file to upload, but thanks for your data and time')
 
-            nor_vis = {
-                'min': -10,
-                'max': 40,
-                'palette': [
-                    '040274', '040281', '0502a3', '0502b8', '0502ce', '0502e6',
-                    '0602ff', '235cb1', '307ef3', '269db1', '30c8e2', '32d3ef',
-                    '3be285', '3ff38f', '86e26f', '3ae237', 'b5e22e', 'd6e21f',
-                    'fff705', 'ffd611', 'ffb613', 'ff8b13', 'ff6e08', 'ff500d',
-                    'ff0000', 'de0101', 'c21301', 'a71001', '911003'
-                ],
-            }
-
-            name = windex.value + ' ' + collection.value + ' ' + compendium.value
-
-        
-            if compendium.value == 'Max':
-                banda = banda.max()
-            elif compendium.value == 'Min':
-                banda = banda.min()
-            elif compendium.value == 'Mean':
-                banda = banda.mean()
-            elif compendium.value == 'Median':
-                banda = banda.median()
-            elif compendium.value == 'Percentile 10':
-                banda = banda.reduce(ee.Reducer.percentile([10]))
-            elif compendium.value == 'Percentile 20':
-                banda = banda.reduce(ee.Reducer.percentile([20]))
-            elif compendium.value == 'Percentile 90':
-                banda = banda.reduce(ee.Reducer.percentile([90]))
-            elif compendium.value == 'Percentile 95':
-                banda = banda.reduce(ee.Reducer.percentile([95]))
-            else:
-                banda = banda.median()
-            
-            # We made a dict with the images loaded in the map, key is the name and image and geometry are the values for each entry
-            downloads_images[name] = [banda, geom]
-            rdlist.options = [i for i in list(downloads_images.keys())]
-            #print('desde submit', downloads_images)
-            m.addLayer(banda, nor_vis, name)
+            except Exception as e:
+                print(e)
+                print('Please, check your data and try again')
+                return
        
             with output:
 
                 output.clear_output()
-                print("The raster has been added to the map.")
+                print("The data has been uploaded to the Datlab, thank you.")
     
     load_rasters.on_click(submit_clicked)
 
@@ -3747,24 +3721,24 @@ def Form(m=None):
 
     reset_btn.on_click(reset_btn_click)
 
-    dwlnd_btn = widgets.Button(
-        description="Download",
-        button_style="primary",
-        style=style,
-        layout=widgets.Layout(padding="0px", width=button_width),
-    )
+    # dwlnd_btn = widgets.Button(
+    #     description="Download",
+    #     button_style="primary",
+    #     style=style,
+    #     layout=widgets.Layout(padding="0px", width=button_width),
+    # )
 
-    def dwlnd_btn_click(change):
+    # def dwlnd_btn_click(change):
         
-        sc = scale.value
-        crs_ = "EPSG:"+ crs.value
-        rs = rdlist.value
-        outname = output_name.value
-        download_ee_image(downloads_images[rs][0], outname, scale=sc, region=downloads_images[rs][1].geometry(), crs=crs_)
-        print('Downloading raster to the current folder... Por dios ya...')
+    #     sc = scale.value
+    #     crs_ = "EPSG:"+ crs.value
+    #     rs = rdlist.value
+    #     outname = output_name.value
+    #     download_ee_image(downloads_images[rs][0], outname, scale=sc, region=downloads_images[rs][1].geometry(), crs=crs_)
+    #     print('Downloading raster to the current folder... Por dios ya...')
         
 
-    dwlnd_btn.on_click(dwlnd_btn_click)
+    # dwlnd_btn.on_click(dwlnd_btn_click)
  
     output = widgets.Output(layout=widgets.Layout(width=widget_width, padding=padding))
 
@@ -3788,14 +3762,14 @@ def Form(m=None):
         collector_name,
         collector_mail,
         widgets.VBox([float_Xtext, float_Ytext]),
-        widgets.VBox([file, upload]),
+        widgets.VBox([filename, upload]),
         widgets.HBox([start_year, start_year_label]),
         ndvi2gif,
         #scale,
         #widgets.VBox([scale, crs]),
         #get_keys(),
         tab,
-        widgets.HBox([load_rasters, dwlnd_btn, reset_btn]),
+        widgets.HBox([load_rasters, reset_btn]),
         output,
     ]
 
