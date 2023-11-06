@@ -2447,7 +2447,7 @@ def WaterDetect(m=None):
     load_rasters = widgets.Button(
         description="Apply",
         button_style="primary",
-        tooltip="Load the selected phenometrics",
+        tooltip="Load the flood mask product",
         style=style,
         layout=widgets.Layout(padding="0px", width=button_width),
     )
@@ -3114,7 +3114,7 @@ def LST(m=None):
     load_rasters = widgets.Button(
         description="Apply",
         button_style="primary",
-        tooltip="Load the selected phenometrics",
+        tooltip="Load the LST products",
         style=style,
         layout=widgets.Layout(padding="0px", width=button_width),
     )
@@ -3268,6 +3268,462 @@ def LST(m=None):
         #widgets.VBox([scale, crs]),
         #get_keys(),
         tab,
+        widgets.HBox([load_rasters, dwlnd_btn, reset_btn]),
+        output,
+    ]
+
+    toolbar_event = ipyevents.Event(
+        source=toolbar_widget, watched_events=["mouseenter", "mouseleave"]
+    )
+
+    def handle_toolbar_event(event):
+
+        if event["type"] == "mouseenter":
+            toolbar_widget.children = [toolbar_header, toolbar_footer]
+        elif event["type"] == "mouseleave":
+            if not toolbar_button.value:
+                toolbar_widget.children = [toolbar_button]
+                toolbar_button.value = False
+                close_button.value = False
+
+    toolbar_event.on_dom_event(handle_toolbar_event)
+
+    def toolbar_btn_click(change):
+        if change["new"]:
+            close_button.value = False
+            toolbar_widget.children = [toolbar_header, toolbar_footer]
+        else:
+            if not close_button.value:
+                toolbar_widget.children = [toolbar_button]
+
+    toolbar_button.observe(toolbar_btn_click, "value")
+
+    def close_btn_click(change):
+        if change["new"]:
+            toolbar_button.value = False
+            if m is not None:
+                if m.tool_control is not None and m.tool_control in m.controls:
+                    m.remove_control(m.tool_control)
+                    m.tool_control = None
+                m.toolbar_reset()
+            toolbar_widget.close()
+
+    close_button.observe(close_btn_click, "value")
+
+    toolbar_button.value = True
+    if m is not None:
+        toolbar_control = ipyleaflet.WidgetControl(
+            widget=toolbar_widget, position="topright"
+        )
+
+        if toolbar_control not in m.controls:
+            m.add_control(toolbar_control)
+            m.tool_control = toolbar_control
+    else:
+        return toolbar_widget
+    
+
+
+##############################################################################################################
+##############################################################################################################
+##############################################################################################################
+
+def Form(m=None):
+
+    """Form to send us data and feedback
+
+    Args:
+        m (geemap.Map, optional staellite collection and phenometrics DOY or value): A geemap Map instance. Defaults to None.
+
+    Returns:
+        ipywidgets: The interactive GUI.
+    """
+
+    if m is not None:
+        m.add_basemap("Esri.WorldImagery")
+
+    
+
+    #############################################
+    # eLTER sites stuffs
+    #############################################
+
+    #Adding eLETR shapes through deimsPY
+    
+    eelter_object = ee.FeatureCollection('projects/ee-digdgeografo/assets/elter_lyon')
+
+    deimsDict = {'Donana': "bcbc866c-3f4f-47a8-bbbc-0a93df6de7b2",
+                 'Braila_Island': "d4854af8-9d9f-42a2-af96-f1ed9cb25712",
+                 'Baixo': "45722713-80e3-4387-a47b-82c97a6ef62b",
+                 'River_Exe': "b8e9402a-10bc-4892-b03d-1e85fc925c99",
+                 'Cairngorms': "1b94503d-285c-4028-a3db-bc78e31dea07",
+                 'Veluwe': "bef0bbd2-d8a9-4672-9e5b-085d049f4879",
+                 'Gran_Paradiso': "e33c983a-19ad-4f40-a6fd-1210ee0b3a4b",
+                 'Schorfheide': "94c53dd1-acad-4ad8-a73b-62669ec7af2a",
+                 'Neusiedler': "1230b149-9ba5-4ab8-86c9-cf93120f8ae2"}
+    
+    networks = {"Austria": "d45c2690-dbef-4dbc-a742-26ea846edf28",
+            "Belgica": "735946e0-4e9e-484a-acee-85e31f4e2a2e",
+            "Bulgaria": "20ad4fa2-cc07-4848-b9ed-8952c55f1a3f",
+            "Denmark": "e3911e8a-ce9b-46ce-8265-c2dc9676ad03",
+            "Finland": "aaae2a46-f355-41d0-8067-c2f0cd52e814",
+            "France": "d8d9206f-b1bd-4f90-84b7-8c662d4235a2",
+            "Germany": "e904354a-f3a0-40ce-a9b5-61741f66c824",
+            "Greece": "83453a6c-792d-4549-9dbb-c17ced2e0cc3",
+            "Hungary": "0615a89f-2883-47ab-8cd0-2508f413cab7",
+            "Israel": "e0f680c2-22b1-4424-bf54-58aa9b7476a0",
+            "Italy": "7fef6b73-e5cb-4cd2-b438-ed32eb1504b3",
+            "Netherlands": "8312c2c4-a787-4986-9a3d-3f1364bab3ba",
+            "Norway": "bc7c517b-3648-40cc-a04c-8c98d009c4a9",
+            "Poland": "67763729-45a7-4248-a70d-622b1d0a3d41",
+            "Portugal": "d8eb4823-b707-4590-94d8-d90c1d07d6f8",
+            "Romania": "4260f964-0ac4-4406-8adc-5afc06e31779",
+            "Slovakia": "3d6a8d72-9f86-4082-ad56-a361b4cdc8a0",
+            "Slovenia": "fda2984f-9aea-4abf-9f6c-c3eca0f82eb8",
+            "Spain": "2b70f1fb-f7d9-4615-a1a3-33fc6fa44600",
+            "Sweden": "a50d9e39-d4b6-4d30-bba2-43580ac8c0b2",
+            "Switzerland": "cedf695c-c6dc-4660-b944-3c22f12ad0d9"}
+
+    country_sites = {}    
+
+    for k, v in deimsDict.items():
+        eLTER_SITES[k] = [deims.getSiteById(v)['title'], gdf_to_ee(deims.getSiteBoundaries(v))]
+
+    # Shape Styling
+
+    style = {
+                    "stroke": True,
+                    "color": "red",
+                    "weight": 3,
+                    "opacity": 0.5,
+                    "fill": False,
+                    "fillColor": "blue",
+                    "fillOpacity": 0,
+                    "clickable": False
+    }
+
+    
+    for k, v in deimsDict.items():
+        m.add_elter_sites(v, style, k)
+    m.centerObject(eelter_object)
+
+
+    #############################################
+    # Widgets stuffs
+    #############################################
+
+
+    output_widget = widgets.Output(layout={'border': '1px solid black'})
+    output_control = ipyleaflet.WidgetControl(widget=output_widget, position='bottomright')
+    m.add_control(output_control)
+
+    output_widget.clear_output()
+    logo = widgets.HTML(
+        value='<img src="https://pbs.twimg.com/profile_images/1310893180234141697/XbUuptdr_400x400.jpg" width="100" height="100">')
+    with output_widget:
+        display(logo)
+
+    #m.add_shapefile(lter_shp, style=style, layer_name='eLTER sites')
+    #m.centerObject(eelter_object, 5)
+
+    widget_width = "350px"
+    padding = "0px 0px 0px 4px"  # upper, right, bottom, left
+    style = {"description_width": "initial"}
+
+    toolbar_button = widgets.ToggleButton(
+        value=False,
+        tooltip="Toolbar",
+        icon="thermometer-empty",
+        button_style="warning",
+        layout=widgets.Layout(width="28px", height="28px", padding="0px 0px 0px 4px"),
+    )
+
+    close_button = widgets.ToggleButton(
+        value=False,
+        tooltip="Close the tool",
+        icon="times",
+        button_style="primary",
+        layout=widgets.Layout(height="28px", width="28px", padding="0px 0px 0px 4px"),
+    )
+    
+    #Here we start the changes
+    network = widgets.Dropdown(
+        options=[i for i in networks.keys()],
+        value=None,
+        description="eLTER Network:",
+        layout=widgets.Layout(width=widget_width, padding=padding),
+        style=style,
+    )
+
+    site = widgets.Dropdown(
+        options=[],
+        value=None,
+        description="eLTER Site:",
+        layout=widgets.Layout(width=widget_width, padding=padding),
+        style=style,
+    )
+
+    #displaying the text widget
+    collector_name = widgets.Text(
+        description="Collector Name", 
+        layout=widgets.Layout(width='350px', padding="0px 0px 0px 0px"),
+        flex_flow='column',
+        align_items='stretch', 
+        style= {'description_width': 'initial'}
+        )
+   
+    collector_mail = widgets.Text(
+        description="Collector Email", 
+        layout=widgets.Layout(width='350px', padding="0px 0px 0px 0px"),
+        flex_flow='column',
+        align_items='stretch', 
+        style= {'description_width': 'initial'}
+        )
+
+    float_Xtext = widgets.FloatText(
+            value=37.8756,
+            step=0.001,
+            description='Insert Latitude Coord (decimal degrees):',
+            layout=widgets.Layout(width='350px', padding="0px 0px 0px 0px"),
+            flex_flow='column',
+            align_items='stretch', 
+            style= {'description_width': 'initial'}
+            )
+    
+    float_Ytext = widgets.FloatText(
+        value=-6.8756,
+        step=0.001,
+        description='Insert Longitude Coord (decimal degrees):',
+        layout=widgets.Layout(width='350px', padding="0px 0px 0px 0px"),
+        flex_flow='column',
+        align_items='stretch', 
+        style= {'description_width': 'initial'}
+    )
+
+    start_year = widgets.IntSlider(
+        description="Year:",
+        value=2017,
+        min=2001,
+        max=2022,
+        readout=False,
+        layout=widgets.Layout(width="320px"),
+        style= {'description_width': 'initial'})
+
+    start_year_label = widgets.Label()
+    widgets.jslink((start_year, "value"), (start_year_label, "value"))
+    #aa = widgets.HBox([start_year, start_year_label])
+
+    ndvi2gif = widgets.Checkbox(
+        value=True,
+        description="Show Ndvi2Gif NDWI composite",
+        tooltip="Show last seasons NDWI median composite",
+        style=style,
+    )
+
+
+    
+    def network_change(change):
+
+        #country_sites = {}
+        if change['new']:
+
+            # recorro una red nacional
+            country_list = deims.getListOfSites(networks[change['new']])
+
+            for i in country_list:        
+                #print(i)        
+                name = deims.getSiteById(i)['title'].split(' - ')[0]
+                #print(name)        
+                geom = deims.getSiteBoundaries(i)['geometry']#geemap.gdf_to_ee(deims.getSiteBoundaries(i))
+                if len(geom) != 0:
+                    country_sites[name] = gdf_to_ee(deims.getSiteBoundaries(i))
+                else:
+                    continue 
+            
+            site.options = [i for i in list(country_sites.keys())]
+            
+                
+    network.observe(network_change, "value")
+
+    def site_change(change):
+
+        #print(country_sites)
+        if change['new']:
+            
+            geom = country_sites[change['new']]
+            #title = eLTER_SITES[change['new']][0]
+            m.centerObject(geom)
+            if ndvi2gif.value==True:
+
+                MyClass = NdviSeasonality(roi=geom, sat='S2', key='perc_90', periods=4,start_year=2018, end_year=2022, index='ndvi')
+                median = MyClass.get_year_composite().mean()
+                vizParams = {'bands': ['spring', 'autumn', 'winter'], 'min': 0.15, 'max': 0.8}
+                m.addLayer(median, vizParams, 'perc_90')
+
+            # with output:
+            #     output.clear_output()
+            #     print('eLTER Title:', title)
+                
+    site.observe(site_change, "value")
+
+    
+
+
+    button_width = "113px"
+    load_rasters = widgets.Button(
+        description="Apply",
+        button_style="primary",
+        tooltip="Send your data and feedback",
+        style=style,
+        layout=widgets.Layout(padding="0px", width=button_width),
+    )
+
+    
+
+    def submit_clicked(b):
+
+        #####################################################################
+        #functions to compute LST and Emissivity
+        #####################################################################
+
+
+        sdate = str(start_date.value)
+        edate = str(end_date.value)
+        col = collections[collection.value]
+
+        with output:
+            print("Loading data... Please wait...")
+
+        # nd_bands = None
+        # if (first_band.value is not None) and (second_band.value is not None):
+        #     nd_bands = [first_band.value, second_band.value]
+
+        temp_output = widgets.Output()
+
+        if m is not None:
+            
+            geom = country_sites[site.value] 
+
+            # Apply cloud filter to landsat
+            if collection.value == 'Landsat':
+                dataset = col.filterBounds(geom).filterDate(ee.Date(sdate), 
+                    ee.Date(edate)).filterMetadata('CLOUD_COVER', 'less_than', int(clouds.value))
+            else:
+                #print('Please, check your collection choice')
+                dataset = col.filterBounds(geom).filterDate(ee.Date(sdate), ee.Date(edate)) 
+
+
+            clipped = dataset.map(lambda image: image.clip(geom))
+
+            #banda = clipped.map(d[windex.value])
+            banda = clipped.select(windex.value)
+            #vegetationrs = clipped.select(banda)
+
+            nor_vis = {
+                'min': -10,
+                'max': 40,
+                'palette': [
+                    '040274', '040281', '0502a3', '0502b8', '0502ce', '0502e6',
+                    '0602ff', '235cb1', '307ef3', '269db1', '30c8e2', '32d3ef',
+                    '3be285', '3ff38f', '86e26f', '3ae237', 'b5e22e', 'd6e21f',
+                    'fff705', 'ffd611', 'ffb613', 'ff8b13', 'ff6e08', 'ff500d',
+                    'ff0000', 'de0101', 'c21301', 'a71001', '911003'
+                ],
+            }
+
+            name = windex.value + ' ' + collection.value + ' ' + compendium.value
+
+        
+            if compendium.value == 'Max':
+                banda = banda.max()
+            elif compendium.value == 'Min':
+                banda = banda.min()
+            elif compendium.value == 'Mean':
+                banda = banda.mean()
+            elif compendium.value == 'Median':
+                banda = banda.median()
+            elif compendium.value == 'Percentile 10':
+                banda = banda.reduce(ee.Reducer.percentile([10]))
+            elif compendium.value == 'Percentile 20':
+                banda = banda.reduce(ee.Reducer.percentile([20]))
+            elif compendium.value == 'Percentile 90':
+                banda = banda.reduce(ee.Reducer.percentile([90]))
+            elif compendium.value == 'Percentile 95':
+                banda = banda.reduce(ee.Reducer.percentile([95]))
+            else:
+                banda = banda.median()
+            
+            # We made a dict with the images loaded in the map, key is the name and image and geometry are the values for each entry
+            downloads_images[name] = [banda, geom]
+            rdlist.options = [i for i in list(downloads_images.keys())]
+            #print('desde submit', downloads_images)
+            m.addLayer(banda, nor_vis, name)
+       
+            with output:
+
+                output.clear_output()
+                print("The raster has been added to the map.")
+    
+    load_rasters.on_click(submit_clicked)
+
+    reset_btn = widgets.Button(
+        description="Reset",
+        button_style="primary",
+        style=style,
+        layout=widgets.Layout(padding="0px", width=button_width),
+    )
+
+    def reset_btn_click(change):
+        output.clear_output()
+
+    reset_btn.on_click(reset_btn_click)
+
+    dwlnd_btn = widgets.Button(
+        description="Download",
+        button_style="primary",
+        style=style,
+        layout=widgets.Layout(padding="0px", width=button_width),
+    )
+
+    def dwlnd_btn_click(change):
+        
+        sc = scale.value
+        crs_ = "EPSG:"+ crs.value
+        rs = rdlist.value
+        outname = output_name.value
+        download_ee_image(downloads_images[rs][0], outname, scale=sc, region=downloads_images[rs][1].geometry(), crs=crs_)
+        print('Downloading raster to the current folder... Por dios ya...')
+        
+
+    dwlnd_btn.on_click(dwlnd_btn_click)
+ 
+    output = widgets.Output(layout=widgets.Layout(width=widget_width, padding=padding))
+
+    # tab1 = widgets.VBox(children=[crs, scale, output_name])
+    # rdlist.options = [i for i in list(downloads_images.keys())]
+    # tab2 = widgets.VBox(children=[rdlist])
+    # tab = widgets.Tab(children=[tab2, tab1])
+    # tab.set_title(1, 'Download Options')
+    # tab.set_title(0, 'Rasters list')
+
+
+    toolbar_widget = widgets.VBox(layout=widgets.Layout(border="solid orange"))
+    toolbar_widget.children = [toolbar_button]
+    toolbar_header = widgets.HBox()
+    toolbar_header.children = [close_button, toolbar_button]
+    toolbar_footer = widgets.VBox()
+    toolbar_footer.children = [
+        network,
+        site,
+        collector_name,
+        collector_mail,
+        widgets.VBox([float_Xtext, float_Ytext]),
+        widgets.HBox([start_year, start_year_label]),
+        ndvi2gif,
+        #scale,
+        #widgets.VBox([scale, crs]),
+        #get_keys(),
+        #tab,
         widgets.HBox([load_rasters, dwlnd_btn, reset_btn]),
         output,
     ]

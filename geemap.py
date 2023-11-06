@@ -802,9 +802,9 @@ class Map(ipyleaflet.Map):
                     with tool_output:
                         tool_output.clear_output()
                         display(save_map_widget)
-                elif tool_name == "eraser":
-                    self.remove_drawn_features()
-                    tool.value = False
+                # elif tool_name == "eraser":
+                #     self.remove_drawn_features()
+                #     tool.value = False
                 elif tool_name == "inspector":
                     self.inspector_checked = tool.value
                     if not self.inspector_checked:
@@ -824,84 +824,84 @@ class Map(ipyleaflet.Map):
                     if self.draw_control in self.controls:
                         self.remove_control(self.draw_control)
                     self.add_control(self.draw_control_lite)
-                elif tool_name == "open_data":
-                    from .toolbar import open_data_widget
+                # elif tool_name == "open_data":
+                #     from .toolbar import open_data_widget
 
-                    open_data_widget(self)
-                elif tool_name == "convert_js":
-                    from .toolbar import convert_js2py
+                #     open_data_widget(self)
+                # elif tool_name == "convert_js":
+                #     from .toolbar import convert_js2py
 
-                    convert_js2py(self)
-                elif tool_name == "whitebox":
-                    import whiteboxgui.whiteboxgui as wbt
+                #     convert_js2py(self)
+                # elif tool_name == "whitebox":
+                #     import whiteboxgui.whiteboxgui as wbt
 
-                    tools_dict = wbt.get_wbt_dict()
-                    wbt_toolbox = wbt.build_toolbox(
-                        tools_dict,
-                        max_width="800px",
-                        max_height="500px",
-                        sandbox_path=self.sandbox_path,
-                    )
-                    wbt_control = ipyleaflet.WidgetControl(
-                        widget=wbt_toolbox, position="bottomright"
-                    )
-                    self.whitebox = wbt_control
-                    self.add_control(wbt_control)
-                elif tool_name == "geetoolbox":
-                    from .toolbar import build_toolbox, get_tools_dict
+                #     tools_dict = wbt.get_wbt_dict()
+                #     wbt_toolbox = wbt.build_toolbox(
+                #         tools_dict,
+                #         max_width="800px",
+                #         max_height="500px",
+                #         sandbox_path=self.sandbox_path,
+                #     )
+                #     wbt_control = ipyleaflet.WidgetControl(
+                #         widget=wbt_toolbox, position="bottomright"
+                #     )
+                #     self.whitebox = wbt_control
+                #     self.add_control(wbt_control)
+                # elif tool_name == "geetoolbox":
+                #     from .toolbar import build_toolbox, get_tools_dict
 
-                    tools_dict = get_tools_dict()
-                    gee_toolbox = build_toolbox(
-                        tools_dict, max_width="800px", max_height="500px"
-                    )
-                    geetoolbox_control = ipyleaflet.WidgetControl(
-                        widget=gee_toolbox, position="bottomright"
-                    )
-                    self.geetoolbox = geetoolbox_control
-                    self.add_control(geetoolbox_control)
+                #     tools_dict = get_tools_dict()
+                #     gee_toolbox = build_toolbox(
+                #         tools_dict, max_width="800px", max_height="500px"
+                #     )
+                #     geetoolbox_control = ipyleaflet.WidgetControl(
+                #         widget=gee_toolbox, position="bottomright"
+                #     )
+                #     self.geetoolbox = geetoolbox_control
+                #     self.add_control(geetoolbox_control)
 
-                elif tool_name == "basemap":
-                    from .toolbar import change_basemap
+                # elif tool_name == "basemap":
+                #     from .toolbar import change_basemap
 
-                    change_basemap(self)
-                elif tool_name == "timelapse":
-                    from .toolbar import timelapse_gui
+                #     change_basemap(self)
+                # elif tool_name == "timelapse":
+                #     from .toolbar import timelapse_gui
 
-                    timelapse_gui(self)
-                    self.toolbar_reset()
-                elif tool_name == "timeslider":
-                    from .toolbar import time_slider
+                #     timelapse_gui(self)
+                #     self.toolbar_reset()
+                # elif tool_name == "timeslider":
+                #     from .toolbar import time_slider
 
-                    time_slider(self)
-                    self.toolbar_reset()
-                elif tool_name == "draw":
-                    from .toolbar import collect_samples
+                #     time_slider(self)
+                #     self.toolbar_reset()
+                # elif tool_name == "draw":
+                #     from .toolbar import collect_samples
 
-                    self.training_ctrl = None
-                    collect_samples(self)
-                elif tool_name == "transect":
-                    from .toolbar import plot_transect
+                #     self.training_ctrl = None
+                #     collect_samples(self)
+                # elif tool_name == "transect":
+                #     from .toolbar import plot_transect
 
-                    plot_transect(self)
-                elif tool_name == "sankee":
-                    from .toolbar import sankee_gui
+                #     plot_transect(self)
+                # elif tool_name == "sankee":
+                #     from .toolbar import sankee_gui
 
-                    sankee_gui(self)
-                elif tool_name == "planet":
-                    from .toolbar import split_basemaps
+                #     sankee_gui(self)
+                # elif tool_name == "planet":
+                #     from .toolbar import split_basemaps
 
-                    split_basemaps(self, layers_dict=planet_tiles())
-                    self.toolbar_reset()
-                elif tool_name == "cog-inspector":
-                    from .toolbar import inspector_gui
+                #     split_basemaps(self, layers_dict=planet_tiles())
+                #     self.toolbar_reset()
+                # elif tool_name == "cog-inspector":
+                #     from .toolbar import inspector_gui
 
-                    inspector_gui(self)
+                #     inspector_gui(self)
 
-                elif tool_name == "help":
-                    import webbrowser
+                # elif tool_name == "help":
+                #     import webbrowser
 
-                    webbrowser.open_new_tab("https://geemap.org")
-                    current_tool.value = False
+                #     webbrowser.open_new_tab("https://geemap.org")
+                #     current_tool.value = False
 
                 elif tool_name == "PhenoApp":
                     from .toolbar import PhenoApp
@@ -921,6 +921,13 @@ class Map(ipyleaflet.Map):
                     WaterDetect(self)
                     self.toolbar_reset()
                     #print('Flood is coming... Run!')
+
+                elif tool_name == "Form":
+                    from .toolbar import Form
+
+                    Form(self)
+                    self.toolbar_reset()
+                    
 
             else:
                 tool = change["owner"]
