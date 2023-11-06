@@ -3538,6 +3538,59 @@ def Form(m=None):
         style=style,
     )
 
+    #Here we start the tab form
+    metrics = widgets.Dropdown(
+        options=["SOS", "MOS", "EOS"],
+        value=None,
+        description="Phenometric:",
+        layout=widgets.Layout(width=widget_width, padding=padding),
+        style=style,
+    )
+
+    doy = widgets.IntSlider(
+        description="DOY:",
+        value=162,
+        min=1,
+        max=365,
+        readout=True,
+        layout=widgets.Layout(width="320px"),
+        style= {'description_width': 'initial'})
+    
+    #Here we start the tab form
+    floods = widgets.Checkbox(
+        value=False,
+        description="Water presence",
+        tooltip="Show last seasons NDWI median composite",
+        style=style,
+    )
+
+    depth = widgets.FloatRangeSlider(
+        value=[5, 7.5],
+        min=0,
+        max=10.0,
+        step=0.1,
+        description='Depth levels:',
+        disabled=False,
+        continuous_update=False,
+        orientation='horizontal',
+        readout=True,
+        readout_format='.1f',
+    )
+
+    depth_label = widgets.Label()
+    widgets.jslink((depth, "value"), (depth_label, "value"))
+
+    temps = widgets.BoundedFloatText(
+        value=25.5,
+        min=0,
+        max=50,
+        step=0.1,
+        description='Temperature ºC:',
+        disabled=False,
+        style= {'description_width': 'initial'}
+    )
+
+
 
     
     def network_change(change):
@@ -3585,8 +3638,6 @@ def Form(m=None):
     site.observe(site_change, "value")
 
     
-
-
     button_width = "113px"
     load_rasters = widgets.Button(
         description="Apply",
@@ -3717,12 +3768,13 @@ def Form(m=None):
  
     output = widgets.Output(layout=widgets.Layout(width=widget_width, padding=padding))
 
-    # tab1 = widgets.VBox(children=[crs, scale, output_name])
-    # rdlist.options = [i for i in list(downloads_images.keys())]
-    # tab2 = widgets.VBox(children=[rdlist])
-    # tab = widgets.Tab(children=[tab2, tab1])
-    # tab.set_title(1, 'Download Options')
-    # tab.set_title(0, 'Rasters list')
+    tab1 = widgets.VBox(children=[metrics, doy])
+    tab2 = widgets.VBox(children=[floods, depth])
+    tab3 = widgets.VBox(children=[temps])
+    tab = widgets.Tab(children=[tab1, tab2, tab3])
+    tab.set_title(0, 'PhenoMetrics')
+    tab.set_title(1, 'Flood')
+    tab.set_title(2, 'LST')
 
 
     toolbar_widget = widgets.VBox(layout=widgets.Layout(border="solid orange"))
@@ -3742,7 +3794,7 @@ def Form(m=None):
         #scale,
         #widgets.VBox([scale, crs]),
         #get_keys(),
-        #tab,
+        tab,
         widgets.HBox([load_rasters, dwlnd_btn, reset_btn]),
         output,
     ]
