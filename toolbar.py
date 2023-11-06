@@ -2832,15 +2832,15 @@ def LST(m=None):
     # Shape Styling
 
     style = {
-                    "stroke": True,
-                    "color": "#FF5F1F",
-                    "weight": 3,
-                    "opacity": 0.5,
-                    "fill": False,
-                    "fillColor": "blue",
-                    "fillOpacity": 0,
-                    "clickable": False
-    }
+            "stroke": True,
+            "color": "#FF5F1F",
+            "weight": 3,
+            "opacity": 0.5,
+            "fill": False,
+            "fillColor": "blue",
+            "fillOpacity": 0,
+            "clickable": False
+        }
 
     #m.add_ee_layer(eelter_object, style, 'eLTER sites')
     for k, v in deimsDict.items():
@@ -3018,14 +3018,14 @@ def LST(m=None):
     windex = widgets.Dropdown(
         options=['ST_B10', 'LST_Day_1km', 'LST_Night_1km'],
         value='LST_Day_1km',
-        description="Emissivity or LST band:",
+        description="Select the LST band:",
         layout=widgets.Layout(width=widget_width, padding=padding),
         style=style,
     )
 
     # Stats
     compendium = widgets.Dropdown(
-        options=['Max', 'Min', 'Mean', 'Median', 'Percentile 10', 'Percentile 20', 'Percentile 90', 'Percentile 95', 'TS'],
+        options=['Max', 'Min', 'Mean', 'Median', 'Percentile 10', 'Percentile 20', 'Percentile 90', 'Percentile 95'],
         value=None, 
         description="Statistics Per Pixel:",
         layout=widgets.Layout(width=widget_width, padding=padding),
@@ -3391,15 +3391,15 @@ def Form(m=None):
     # Shape Styling
 
     style = {
-                    "stroke": True,
-                    "color": "red",
-                    "weight": 3,
-                    "opacity": 0.5,
-                    "fill": False,
-                    "fillColor": "blue",
-                    "fillOpacity": 0,
-                    "clickable": False
-    }
+            "stroke": True,
+            "color": "red",
+            "weight": 3,
+            "opacity": 0.5,
+            "fill": False,
+            "fillColor": "blue",
+            "fillOpacity": 0,
+            "clickable": False
+        }
 
     
     for k, v in deimsDict.items():
