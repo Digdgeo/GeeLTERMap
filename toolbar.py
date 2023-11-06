@@ -14,9 +14,6 @@ from datetime import datetime
 
 from .common import *
 
-print("Welcome to GeeLTERMap")
-print("Please wait a minute after the country network is selected")
-
 eLTER_SITES = {}
 downloads_images = {}
 
@@ -1591,7 +1588,7 @@ def PhenoApp(m=None):
 
     output_widget.clear_output()
     logo = widgets.HTML(
-        value='<img src="https://pbs.twimg.com/profile_images/1310893180234141697/XbUuptdr_400x400.jpg" width="100" height="100">')
+        value='<img src="https://pbs.twimg.com/profile_images/1310893180234141697/XbUuptdr_400x400.jpg" width="50" height="50">')
     with output_widget:
         display(logo)
 
@@ -2198,7 +2195,7 @@ def WaterDetect(m=None):
 
     output_widget.clear_output()
     logo = widgets.HTML(
-        value='<img src="https://pbs.twimg.com/profile_images/1310893180234141697/XbUuptdr_400x400.jpg" width="100" height="100">')
+        value='<img src="https://pbs.twimg.com/profile_images/1310893180234141697/XbUuptdr_400x400.jpg" width="50" height="50">')
     with output_widget:
         display(logo)
 
@@ -2884,7 +2881,7 @@ def LST(m=None):
 
     output_widget.clear_output()
     logo = widgets.HTML(
-        value='<img src="https://pbs.twimg.com/profile_images/1310893180234141697/XbUuptdr_400x400.jpg" width="100" height="100">')
+        value='<img src="https://pbs.twimg.com/profile_images/1310893180234141697/XbUuptdr_400x400.jpg" width="50" height="50">')
     with output_widget:
         display(logo)
 
@@ -3421,7 +3418,7 @@ def Form(m=None):
 
     output_widget.clear_output()
     logo = widgets.HTML(
-        value='<img src="https://pbs.twimg.com/profile_images/1310893180234141697/XbUuptdr_400x400.jpg" width="100" height="100">')
+        value='<img src="https://pbs.twimg.com/profile_images/1310893180234141697/XbUuptdr_400x400.jpg" width="50" height="50">')
     with output_widget:
         display(logo)
 
@@ -3584,7 +3581,7 @@ def Form(m=None):
 
     temps = widgets.BoundedFloatText(
         value=25.5,
-        min=0,
+        min=-50,
         max=50,
         step=0.1,
         description='Temperature ºC:',
@@ -3682,8 +3679,7 @@ def Form(m=None):
                     val.write(t1)
                     val.write(t2)
                     val.write(t3)
-
-
+                    
                 csv = list(upload.value.values())[0]
                 if len(csv) != 0:
                     now = datetime.datetime.now().strftime('%Y-%m-%d')
@@ -3696,14 +3692,14 @@ def Form(m=None):
 
                 else:
                     print('No csv file to upload, but thanks for your data and time')
-
+                    return
+               
             except Exception as e:
-                print(e)
-                print('Please, check your data and try again')
+                #print(e)
+                print('No csv file to upload, but thanks for your data and time')
                 return
        
             with output:
-
                 output.clear_output()
                 print("The data has been uploaded to the Datlab, thank you.")
     

@@ -6,7 +6,7 @@ import deims
 from .geemap import *
 from .common import *
 
-def add_elter_site(m=geemap.Map(), site=site):
+def add_elter_site(m=geeltermap.Map(), site=site):
 
     """function to add elter sites to the map
 
