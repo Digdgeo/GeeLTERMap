@@ -41,7 +41,7 @@ class Map(ipyleaflet.Map):
         warnings.filterwarnings("ignore")
 
         print("Welcome to GeeLTERMap")
-        print("Please choose a tool and then wait a minute after the country network is selected")
+        print("Please choose a tool and wait one minute after selecting the national network.")
 
         # Authenticates Earth Engine and initializes an Earth Engine session
         if "ee_initialize" not in kwargs.keys():
