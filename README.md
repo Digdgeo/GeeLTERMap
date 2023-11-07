@@ -57,6 +57,7 @@ Just run the map and follow your natural instinct ;P
     from geeltermap import map
     map()
     ```
+
 Whatever, a video tutorial showing some examples can be found below:
 
 [![Ndvi2Gif](https://i.imgur.com/h9E4Jxz.jpg)](https://www.youtube.com/watch?v=kJkX6aVXBws)
