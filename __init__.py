@@ -1,8 +1,8 @@
 """Top-level package for geemap."""
 
-__author__ = """Qiusheng Wu"""
-__email__ = "giswqs@gmail.com"
-__version__ = "0.19.6"
+__author__ = """Diego Garcia Diaz"""
+__email__ = "digd.geografo@gmail.com"
+__version__ = "0.1.0"
 
 import os
 
