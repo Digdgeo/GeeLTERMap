@@ -67,7 +67,7 @@ If you're reading this (very likely you are Ricardo (Hi, Ricardo)) you will noti
 
 ## ToDO
 
-The project si almost done, but next steps would be:
+The project is almost done, but next steps should be:
 
 - [ ] Process phenology on the fly through geemap and GEE
 - [ ] Add Sentinel 3 data to LST tool (It can be achieved now with PyVpp)
