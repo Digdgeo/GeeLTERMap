@@ -2,7 +2,7 @@
 
 __author__ = """Diego Garcia Diaz"""
 __email__ = "digd.geografo@gmail.com"
-__version__ = "0.1.3"
+__version__ = "0.1.4"
 
 import os
 
@@ -42,7 +42,7 @@ if use_folium():
     from .foliumap import *
 else:
     try:
-        from .geemap import *
+        from .geeltermap import *
     except Exception as e:
         if in_colab_shell():
             print(
