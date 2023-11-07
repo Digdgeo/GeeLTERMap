@@ -1,4 +1,4 @@
-"""Top-level package for geemap."""
+"""Top-level package for geeltermap."""
 
 __author__ = """Diego Garcia Diaz"""
 __email__ = "digd.geografo@gmail.com"
