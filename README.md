@@ -45,7 +45,7 @@ A form has been added to the map for uploading ground truth data from ELTER site
 
 Just pip install geeltermap
     
-    ```
+    ```python
     pip install geeltermap
     ``` 
 
@@ -53,7 +53,7 @@ Just pip install geeltermap
 
 Just run the map and follow your natural instinct ;P
 
-    ```
+    ```python
     from geeltermap import map
     map()
     ```
