@@ -3,26 +3,29 @@ Keep in mind that Earth Engine functions use both camel case and snake case, suc
 ipyleaflet functions use snake case, such as add_tile_layer(), add_wms_layer(), add_minimap().
 """
 
-import math
 import os
-import pkg_resources
-import time
-import deims
+import warnings
+from typing import Optional, Any, Dict
 
 import ee
-import ipyevents
 import ipyleaflet
 import ipywidgets as widgets
+
 from box import Box
 from bqplot import pyplot as plt
-from ipyfilechooser import FileChooser
+
 from IPython.display import display
-from ipytree import Node, Tree
-from .basemaps import xyz_to_leaflet
+from .basemaps import get_xyz_dict, xyz_to_leaflet
 from .common import *
-from .legends import builtin_legends
-from .osm import *
+from .conversion import *
+from .ee_tile_layers import *
+from . import core
+from . import map_widgets
+from . import toolbar
 from .plot import *
+from .timelapse import *
+from .legends import builtin_legends
+from . import examples
 
 
 basemaps = Box(xyz_to_leaflet(), frozen_box=True)
