@@ -23,7 +23,7 @@ from . import core
 from . import map_widgets
 from . import toolbar
 from .plot import *
-from .timelapse import *
+#from .timelapse import *
 from .legends import builtin_legends
 from . import examples
 
