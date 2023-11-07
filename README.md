@@ -1,11 +1,11 @@
 # GeeLTERMap
 
-The GeeLTERMap python package has been created as a resource for scientists and site managers integrated into the eLTER network to evaluate the monitoring of long-term ecosystem variables. It was developed within the scope of the eLTER Plus and SUMHAL projects. 
+The GeeLTERMap python package has been created as a resource for scientists and site managers integrated into the eLTER network to evaluate the monitoring of long-term ecosystem variables. It was developed within the scope of the [eLTER Plus](https://elter-ri.eu/elter-plus) and [SUMHAL](https://lifewatcheric-sumhal.csic.es/) projects. 
 The package offers a dynamic map that integrates with deimsPY to facilitate the selection of any site in the eLTER network. Users can access phenometrics, surface temperature, and flooding data through three tools integrated in the main map application (PhenoApp, FloodApp and LSTApp).
 
 ![Projects logos](https://i.imgur.com/mvnOXuo.png)
 
-Geeltermap is based on the [Geemap](https://geemap.org/) package, a Python API that allows access to Google Earth Engine (GEE) datasets and algorithms and provides an interactive map interface. Additionally, we have access to all alphanumeric and spatial information from the Elter sites thanks to DEIMS and its Python API, DEIMSpy. Furthermore, by enabling access to all relevant site-related information, we can establish custom filters for sites on which we wish to perform specific procedures.
+Geeltermap is based on the [Geemap](https://geemap.org/) package, a Python API that allows access to [Google Earth Engine (GEE)](https://earthengine.google.com/) datasets and algorithms and provides an interactive map interface. Additionally, we have access to all alphanumeric and spatial information from the Elter sites thanks to [DEIMS](https://deims.org/) and its Python API, [DeimsPy](https://pypi.org/project/deims/)]. Furthermore, by enabling access to all relevant site-related information, we can establish custom filters for sites on which we wish to perform specific procedures.
 
 ![GeeLTERMap](https://i.imgur.com/YzuOcl8.png)
 
@@ -34,6 +34,44 @@ The Land Surface Temperature tool provides access MODIS (MOD11A1) and Landsat (T
 Available bands are: ST_B10 for Landsat and LST_Day_1km & LST_Night_1km for MODIS. Available statistics fro image collections reduction are: minimum, maximum, mean, median, and percentiles of 10th, 20th, 90th, and 95th.
 
 ![LSTApp](https://i.imgur.com/EsbThl5.jpg)
+
+## Form
+
+A form has been added to the map for uploading ground truth data from ELTER sites. This data can be used later to validate the products obtained through teledetection. It has been integrated into the map to provide interactive validation. This phase of work is still in development, but currently, the data is stored in a text file. The platform also allows for the upload of a data file stored in Datalab, which will be used later for validation.
+
+![Form](https://i.imgur.com/V08pjaS.jpg)
+
+## Installation
+
+Just pip install geeltermap
+    
+    ```bash
+    pip install geeltermap
+    ``` 
+
+## Usage
+
+Just run the map and follow your natural instinct ;P
+
+    ```python
+    from geeltermap import map
+    map()
+    ```
+Whatever, a video tutorial showing some examples can be found [here](https://www.youtube.com/watch?v=kJkX6aVXBws). 
+If you're reading this (very likely you are Ricardo (Hi, Ricardo)) you will notice that the video is about ndvi2gif, I will record the video of geeletermap in a few hours and will change the link.
+
+## ToDO
+
+The project si almost done, but next steps would be:
+
+- [ ] Process phenology on the fly through geemap and GEE
+- [ ] Add Sentinel 3 data to LST tool (It can be achieved now with PyVpp)
+- [ ] Make more interactive the form with the map
+- [ ] Add Time Series data to Flood and LST tools
+
+## Contributing
+
+Please, if you want to help me with one of the ToDos or you have any idea to improve the project I will be very happy to hear from you.
 
 
 
