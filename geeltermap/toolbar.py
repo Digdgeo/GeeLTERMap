@@ -1588,7 +1588,7 @@ def PhenoApp(m=None):
 
     output_widget.clear_output()
     logo = widgets.HTML(
-        value='<img src="https://pbs.twimg.com/profile_images/1310893180234141697/XbUuptdr_400x400.jpg" width="50" height="50">')
+        value='<img src="https://pbs.twimg.com/profile_images/1310893180234141697/XbUuptdr_400x400.jpg" width="50px" height="50px">')
     with output_widget:
         display(logo)
 
@@ -2195,7 +2195,7 @@ def WaterDetect(m=None):
 
     output_widget.clear_output()
     logo = widgets.HTML(
-        value='<img src="https://pbs.twimg.com/profile_images/1310893180234141697/XbUuptdr_400x400.jpg" width="50" height="50">')
+        value='<img src="https://pbs.twimg.com/profile_images/1310893180234141697/XbUuptdr_400x400.jpg" width="50px" height="50px">')
     with output_widget:
         display(logo)
 
@@ -2881,7 +2881,7 @@ def LST(m=None):
 
     output_widget.clear_output()
     logo = widgets.HTML(
-        value='<img src="https://pbs.twimg.com/profile_images/1310893180234141697/XbUuptdr_400x400.jpg" width="50" height="50">')
+        value='<img src="https://pbs.twimg.com/profile_images/1310893180234141697/XbUuptdr_400x400.jpg" width="50px" height="50px">')
     with output_widget:
         display(logo)
 
@@ -3418,7 +3418,7 @@ def Form(m=None):
 
     output_widget.clear_output()
     logo = widgets.HTML(
-        value='<img src="https://pbs.twimg.com/profile_images/1310893180234141697/XbUuptdr_400x400.jpg" width="50" height="50">')
+        value='<img src="https://pbs.twimg.com/profile_images/1310893180234141697/XbUuptdr_400x400.jpg" width="50px" height="50px">')
     with output_widget:
         display(logo)
 
