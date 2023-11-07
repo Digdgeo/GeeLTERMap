@@ -45,7 +45,7 @@ A form has been added to the map for uploading ground truth data from ELTER site
 
 Just pip install geeltermap
     
-    ```bash
+    ``` python
     pip install geeltermap
     ``` 
 
@@ -53,11 +53,14 @@ Just pip install geeltermap
 
 Just run the map and follow your natural instinct ;P
 
-    ```python
+    ``` python
     from geeltermap import map
     map()
     ```
-Whatever, a video tutorial showing some examples can be found ![Ndvi2Gif](https://www.youtube.com/watch?v=kJkX6aVXBws). 
+Whatever, a video tutorial showing some examples can be found below:
+
+[![Ndvi2Gif](https://i.imgur.com/h9E4Jxz.jpg)](https://www.youtube.com/watch?v=kJkX6aVXBws). 
+
 If you're reading this (very likely you are Ricardo (Hi, Ricardo)) you will notice that the video is about ndvi2gif, I will record the video of geeletermap in a few hours and will change the link.
 
 
