@@ -2,7 +2,7 @@
 
 __author__ = """Diego Garcia Diaz"""
 __email__ = "digd.geografo@gmail.com"
-__version__ = "0.1.2"
+__version__ = "0.1.3"
 
 import os
 
