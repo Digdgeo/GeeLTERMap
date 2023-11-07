@@ -57,8 +57,9 @@ Just run the map and follow your natural instinct ;P
     from geeltermap import map
     map()
     ```
-Whatever, a video tutorial showing some examples can be found [here](https://www.youtube.com/watch?v=kJkX6aVXBws). 
+Whatever, a video tutorial showing some examples can be found ![Ndvi2Gif](https://www.youtube.com/watch?v=kJkX6aVXBws). 
 If you're reading this (very likely you are Ricardo (Hi, Ricardo)) you will notice that the video is about ndvi2gif, I will record the video of geeletermap in a few hours and will change the link.
+
 
 ## ToDO
 
