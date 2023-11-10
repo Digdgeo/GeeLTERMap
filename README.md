@@ -60,7 +60,7 @@ Just run the map and follow your natural instinct ;P
 
 Whatever, a video tutorial showing some examples can be found below:
 
-[![geeltermap video](https://i.imgur.com/h9E4Jxz.jpg)](https://www.youtube.com/watch?v=unxqGwAcBfA&t=2439s)
+[![geeltermap video](https://i.imgur.com/XqqRXyy.jpg)](https://www.youtube.com/watch?v=unxqGwAcBfA&t=2439s)
 
 
 ## ToDO
