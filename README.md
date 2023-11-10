@@ -60,9 +60,7 @@ Just run the map and follow your natural instinct ;P
 
 Whatever, a video tutorial showing some examples can be found below:
 
-[![Ndvi2Gif](https://i.imgur.com/h9E4Jxz.jpg)](https://www.youtube.com/watch?v=kJkX6aVXBws)
-
-If you're reading this (very likely you are Ricardo (Hi, Ricardo)) you will notice that the video is about ndvi2gif, I will record the video of geeletermap in a few hours and will change the link.
+[![geeltermap video](https://i.imgur.com/h9E4Jxz.jpg)](https://www.youtube.com/watch?v=unxqGwAcBfA&t=2439s)
 
 
 ## ToDO
