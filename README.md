@@ -5,7 +5,7 @@ The package offers a dynamic map that integrates with deimsPY to facilitate the 
 
 ![Projects logos](https://i.imgur.com/mvnOXuo.png)
 
-Geeltermap is based on the [Geemap](https://geemap.org/) package, a Python API that allows access to [Google Earth Engine (GEE)](https://earthengine.google.com/) datasets and algorithms and provides an interactive map interface. Additionally, we have access to all alphanumeric and spatial information from the Elter sites thanks to [DEIMS](https://deims.org/) and its Python API, [DeimsPy](https://pypi.org/project/deims/)]. Furthermore, by enabling access to all relevant site-related information, we can establish custom filters for sites on which we wish to perform specific procedures.
+Geeltermap is based on the [Geemap](https://geemap.org/) package, a Python API that allows access to [Google Earth Engine (GEE)](https://earthengine.google.com/) datasets and algorithms and provides an interactive map interface. Additionally, we have access to all alphanumeric and spatial information from the Elter sites thanks to [DEIMS](https://deims.org/) and its Python API, [DeimsPy](https://pypi.org/project/deims/). Furthermore, by enabling access to all relevant site-related information, we can establish custom filters for sites on which we wish to perform specific procedures.
 
 ![GeeLTERMap](https://i.imgur.com/YzuOcl8.png)
 
