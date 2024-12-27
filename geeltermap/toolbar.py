@@ -1659,17 +1659,22 @@ def PhenoApp(m=None):
     )
 
     start_year = widgets.IntSlider(
-        description="Year:",
-        value=2017,
-        min=2001,
-        max=2021,
-        readout=False,
-        style=style,
-        layout=widgets.Layout(width="320px", padding=padding),
+    description="Year:",
+    value=2017,
+    min=2001,
+    max=2022,
+    readout=False,
+    layout=widgets.Layout(width="320px"),
+    style={'description_width': 'initial'}
     )
 
     start_year_label = widgets.Label()
-    widgets.jslink((start_year, "value"), (start_year_label, "value"))
+
+    # Añadir funcionalidad al slider
+    def update_label(change):
+        start_year_label.value = str(change['new'])
+
+    start_year.observe(update_label, names='value')
 
     #NEED TO ADD LOS RASTERS
     phenometrics = widgets.RadioButtons(
@@ -3518,17 +3523,22 @@ def Form(m=None):
     )
 
     start_year = widgets.IntSlider(
-        description="Year:",
-        value=2017,
-        min=2001,
-        max=2022,
-        readout=False,
-        layout=widgets.Layout(width="320px"),
-        style= {'description_width': 'initial'})
+    description="Year:",
+    value=2017,
+    min=2001,
+    max=2022,
+    readout=False,
+    layout=widgets.Layout(width="320px"),
+    style={'description_width': 'initial'}
+    )
 
     start_year_label = widgets.Label()
-    widgets.jslink((start_year, "value"), (start_year_label, "value"))
-    #aa = widgets.HBox([start_year, start_year_label])
+
+    # Añadir funcionalidad al slider
+    def update_label(change):
+        start_year_label.value = str(change['new'])
+
+    start_year.observe(update_label, names='value')
 
     ndvi2gif = widgets.Checkbox(
         value=True,
