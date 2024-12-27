@@ -1850,7 +1850,7 @@ def PhenoApp(m=None):
         min_val = (cur_date - epoch_date).days
         max_val = min_val + 365
 
-        dataset = {'MODIS MCD12Q2.006': ee.ImageCollection('MODIS/006/MCD12Q2')}
+        dataset = {'MODIS MCD12Q2.006': ee.ImageCollection('MODIS/061/MCD12Q2')}
         bands = {'SOS': 'Greenup_1', 'MOS': 'Peak_1', 'EOS': 'Senescence_1', 'LOS': 'EVI_Amplitude_1'}
 
         with output:
