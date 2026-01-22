@@ -250,3 +250,5 @@ cython_debug/
 tests/test_testings.py
 docs/changelog_update.py
 >>>>>>> elter_networks
+
+.codegpt

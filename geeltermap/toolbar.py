@@ -61,8 +61,10 @@ def tool_template(m=None):
         style={"description_width": "initial"},
     )
 
-    int_slider_label = widgets.Label()
-    widgets.jslink((int_slider, "value"), (int_slider_label, "value"))
+    int_slider_label = widgets.Label(value=str(int_slider.value))
+    def _update_int_slider_label(change):
+        int_slider_label.value = str(change['new'])
+    int_slider.observe(_update_int_slider_label, names='value')
 
     float_slider = widgets.FloatSlider(
         min=1,
@@ -74,8 +76,10 @@ def tool_template(m=None):
         style={"description_width": "initial"},
     )
 
-    float_slider_label = widgets.Label()
-    widgets.jslink((float_slider, "value"), (float_slider_label, "value"))
+    float_slider_label = widgets.Label(value=str(float_slider.value))
+    def _update_float_slider_label(change):
+        float_slider_label.value = str(change['new'])
+    float_slider.observe(_update_float_slider_label, names='value')
 
     color = widgets.ColorPicker(
         concise=False,
@@ -2302,8 +2306,10 @@ def WaterDetect(m=None):
         layout=widgets.Layout(width="320px", padding=padding),
     )
 
-    clouds_label = widgets.Label()
-    widgets.jslink((clouds, "value"), (clouds_label, "value"))
+    clouds_label = widgets.Label(value=str(clouds.value))
+    def _update_clouds_label(change):
+        clouds_label.value = str(change['new'])
+    clouds.observe(_update_clouds_label, names='value')
 
     threshold = widgets.FloatSlider(
         description="Threshold:",
@@ -2317,8 +2323,10 @@ def WaterDetect(m=None):
         layout=widgets.Layout(width="320px", padding=padding),
     )
 
-    threshold_label = widgets.Label()
-    widgets.jslink((threshold, "value"), (threshold_label, "value"))
+    threshold_label = widgets.Label(value=str(threshold.value))
+    def _update_threshold_label(change):
+        threshold_label.value = str(change['new'])
+    threshold.observe(_update_threshold_label, names='value')
 
     # Indexes
     windex = widgets.Dropdown(
@@ -2980,8 +2988,10 @@ def LST(m=None):
         layout=widgets.Layout(width="75%", padding=padding),
     )
 
-    clouds_label = widgets.Label()
-    widgets.jslink((clouds, "value"), (clouds_label, "value"))
+    clouds_label = widgets.Label(value=str(clouds.value))
+    def _update_clouds_label2(change):
+        clouds_label.value = str(change['new'])
+    clouds.observe(_update_clouds_label2, names='value')
 
     rdlist = widgets.Dropdown(
         options=[],
@@ -3586,8 +3596,10 @@ def Form(m=None):
         readout_format='.1f',
     )
 
-    depth_label = widgets.Label()
-    widgets.jslink((depth, "value"), (depth_label, "value"))
+    depth_label = widgets.Label(value=str(depth.value))
+    def _update_depth_label(change):
+        depth_label.value = str(change['new'])
+    depth.observe(_update_depth_label, names='value')
 
     temps = widgets.BoundedFloatText(
         value=25.5,
